@@ -156,7 +156,7 @@ plt.xlabel("count")
 plt.ylabel('sector')
 plt.show()
 ```
-![Alt text](images/Figure_1.PNG)
+![Alt text](images/Figure_1.png)
 as can be seen from the bar plot the most dominant sectors are engineering and services."Most work is centered around industrial jobs not enough arts based jobs"
 ### salary analysis
 to analyze the salary satistics we must first convert in to pure numbers removing the comas and the dollar signs
@@ -178,7 +178,7 @@ sns.distplot(df['salary_start'])
 plt.title('salary distribution')
 plt.show()
 ```
-#insert plot here
+![Alt text](images/Figure_2.png)
 as can be seen from the plot that the salries vary from 40k to 150k with the average around 80k."salary inline with the american average"
 we can also check fro the highest paid jobs and the jobs tht have the highest dviation of salary
 ```
@@ -188,7 +188,7 @@ sns.barplot(y=most_paid['Position'],x=most_paid['salary_start'],palette='rocket'
 plt.title('Best paid jobs in LA')
 plt.show()
 ```
-#insert most paid plot
+![Alt text](images/Figure_3.png)
 the largest job market might be engineering but the highest paid jobs come from the services sector and naval departments
 
 ```
@@ -203,7 +203,7 @@ sns.barplot(y=ranges['Position'],x=ranges['salary_diff'],palette='RdBu')
 plt.title("Highest deviation")
 plt.show()
 ```
-#insert difference plot
+![Alt text](images/Figure_4.png)
 as can be seen # job pays the most while # job has the highest deviation. it is clear from this that a supervisor position has the most salary growth without the need for a promotion."add average salary deviation and deviation in each sector"
 we can check for the fluctuation in the job market over the years by analyzing the open date of the job listings
 ```
@@ -221,7 +221,7 @@ plt.ylabel('count')
 plt.gca().set_xticklabels([z for z in reversed(years)],rotation='45')
 plt.show()
 ```
-#insert opportunities plot
+![Alt text](images/Figure_5png.png)
 the opportunities seem to be rising as a whole this seems to be rising dramatically over the years
 also we can check how the top 10 sectors have changed over the years
 ```
@@ -244,7 +244,7 @@ plt.gca().set_xticklabels([z for z in reversed(years)],rotation='45')
 plt.legend(loc='upper left')
 plt.show()
 ```
-#insert opportunities plot2
+![Alt text](images/Figure_6.png)
 as can be seen these job sectors have increased in the past two years
 we can check the fastest growing sectors in the city 
 ```
@@ -279,6 +279,7 @@ sns.barplot(y=sloper['sector'],x=sloper['slope'],palette='RdBu')
 plt.title('fastest growing job sector as of 2018')
 plt.show()
 ```
+![Alt text](images/Figure_7.png)
 the fastest growing sector in the city is engineering and is inline with the largest sectors.
 we can check what level of experience is required for the jobs:
 ```
@@ -293,6 +294,7 @@ plt.gca().axis('equal')
 plt.title('Experience value count')
 plt.show()
 ```
+![Alt text](images/Figure_8.png)
 most of the jobs require two years of experience
 also wether education or experience is prefered:
 ```
@@ -302,6 +304,7 @@ plt.figure(figsize=(5,5))
 plt.bar(height=[x1,x2],x=['College Degree','Experience'])
 plt.show()
 ```
+![Alt text](images/Figure_9.png)
 according to the listings most of the jobs prefer experience over a college degree
 what months are the job offers available in:
 
@@ -314,10 +317,13 @@ month_name=['','january','february','march','april','may','june','july','august'
 plt.gca().set_xticklabels([month_name[x] for x in count.index],rotation='45')
 plt.show()
 ```
+![Alt text](images/Figure_10.png)
 from this graph the jobs seem to be well distributed across the year
 we can also see which of the job postings donot have an end date
 ```
 print('%d job applications may close without prior notice' %df['deadline'].isna().sum())
+
+44 job applications may close without prior notice
 ```
 we can the most common requirements by analyzing the words present in them
 also check most common words in requirements
@@ -335,8 +341,13 @@ plt.title('most common requirements')
 plt.xlabel("count")
 plt.ylabel('requirements')
 plt.show()
+
+Most common words in Requirement
+[('experience', 1211), ('paid', 945), ('full-time', 930), ('years', 850), ('with', 594), ('City', 418), ('Angeles', 416),
+('level', 318), ('from', 274), ('year', 263), ('college', 256), ('accredited', 253), ('university', 218), ('class', 199), ('professional', 189), ('maintenance', 172), ('which', 169), ('units', 157)]
+
 ```
-experience is the most in demand where as colege or unversity are not even present in the top 10
+experience is the most in demand where as college or unversity are not even present in the top 10
 we can also see what most of the jobs use as an entry test:
 ```
 plt.figure(figsize=(7,7))
@@ -345,6 +356,7 @@ sns.barplot(y=count.index,x=count,palette='rocket')
 plt.gca().set_yticklabels(count.index,rotation='45')
 plt.show()
 ```
+![Alt text](images/Figure_12.png)
 most jobs only require an interview which is a good sign
 we can also check pronoun usage to remove gender bias
 ```
@@ -368,6 +380,12 @@ print('pronouns used in requirement section are')
 print(req_prn.keys())
 print('\npronouns used in duties section are')
 print(duties_prn.keys())
+
+pronouns used in requirement section are
+dict_keys(['or2', 'or3', 'or4', 'orb', 'you', 'I', 'they', 'orc', 'or5', 'or6', 'or7', 'or8', 'You', 'it', 'orB', 'offset', 'ore.'])
+
+pronouns used in duties section are
+dict_keys(['they', 'it', 'You', 'I', 'you', 's', 'or2', 'They'])
 ```
 the pronouns used are gender nuetral
 check for job listings such as 'policeman' or 'fireman'
@@ -379,6 +397,8 @@ for name in df['Position']:
         print(z)
     if x is not None:
         print(x)
+        
+        
  ```
  none found
  FleschKincaid Grade Level
@@ -419,6 +439,18 @@ plt.xlabel('Flesch Index')
 plt.title('Flesch index distribution')
 plt.show()
  ```
+ ![Alt text](images/Figure_13.png)
+  checking for college requirement
+ ```
+ tot=df['SCHOOL_TYPE'].shape[0]
+x1=round(df[df['SCHOOL_TYPE']=='College or University'].shape[0]/tot*100)
+x2=100-x1
+plt.figure(figsize=(5,5))
+plt.bar(height=[x1,x2],x=['College Degree','No College Degree'])
+plt.show()
+
+ ```
+ ![Alt text](images/Figure_14.png)
  also we can check for relevant promotions
  ```
  def similar_jobs(job):
@@ -476,11 +508,9 @@ for pos in df['Position']:
     df2['salary']=salprom
     df2['start']=pos
     #display(df2)
-    listprom=pd.concat([df2,listprom])
-display(listprom.head())
+     listprom=listprom.append(df2)
 print(listprom.shape)
 listprom=listprom.reset_index(drop=True)
-print(listprom)
  ```
  also jobs with similar equirements can also be found:
  ```
@@ -500,16 +530,7 @@ print(listprom)
     return jobs
 print(similar_req(df['requirements'][10]))
  ```
- checking for college requirement
- ```
- tot=df['SCHOOL_TYPE'].shape[0]
-x1=round(df[df['SCHOOL_TYPE']=='College or University'].shape[0]/tot*100)
-x2=100-x1
-plt.figure(figsize=(5,5))
-plt.bar(height=[x1,x2],x=['College Degree','No College Degree'])
-plt.show()
-
- ```
+this way applicants applying for one job can know about other jobs with similar requirements making them easier to access
 ## Acknowledgments
 
 * Hat tip to anyone whose code was used

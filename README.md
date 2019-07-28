@@ -8,18 +8,18 @@ The goal is to convert a folder full of plain-text job postings into a single st
 ### Prerequisites
 you can download the bulletin and additional files from the kaggle competition page for the city of LA.
 This analysis is performed using python therefore, to run this on your system you will need a copy of python installed. I recommend getting an IDE such as PYCHARM.
-The libraries required are:
-Pandas: for the dataframes
-IPython: to diplay the dataframes
-re: for the regex templates
-numpy:for the "NAN" constant
-datetime: to extract date and time from the text files
-matplotlib: for plotting
-nltk: to perform word processing analytics
-seaborn:for plotting
-collections:for the counter function
-scipy:for calculating line regression
-os:to create a list of the bulletin text file names
+The libraries required are:<br/>
+Pandas: for the dataframes<br/>
+IPython: to diplay the dataframes<br/>
+re: for the regex templates<br/>
+numpy:for the "NAN" constant<br/>
+datetime: to extract date and time from the text files<br/>
+matplotlib: for plotting<br/>
+nltk: to perform word processing analytics<br/>
+seaborn:for plotting<br/>
+collections:for the counter function<br/>
+scipy:for calculating line regression<br/>
+os:to create a list of the bulletin text file names<br/>
 
 ## Deployment Process
 
@@ -120,8 +120,8 @@ df=to_dataframe(path)
 df.to_csv('jobs_output.csv')#output to csv
 ```
 We can then view the csv file
-#insert csv image
-as can be seen most of the data from the jb bulletins has been captured by printing the shape of the data frame we can know the exact number of entries
+![Alt text](images/csv.PNG)
+as can be seen most of the data from the job bulletins has been captured by printing the shape of the data frame we can know the exact number of entries
 ```
 print(df.shape)
 

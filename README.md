@@ -25,7 +25,7 @@ os:to create a list of the bulletin text file names<br/>
 
 ### Converting Plain-Text to CSV 
 first to convert the folder of plain-text job postings we need to identify a pattern present in these text file so we can extract meaninigful data using regex templates.going through some of the text files we can see recurring patterns such as all the headlines are in caps and have the same order in all the job bulletins.
-#insert image here
+![Alt text](images/textfile_red_circle.jpg)
 we can extract these headings and use them as columns in our CSV:
 the Open date or the date the job was posted is also written in the same place in each bulletin. Analyzing these traits we can write a function to_dataframe to extract all the meaningful data from the text files:
 ```
@@ -156,7 +156,7 @@ plt.xlabel("count")
 plt.ylabel('sector')
 plt.show()
 ```
-#insert bar plot here
+![Alt text](images/Figure_1.PNG)
 as can be seen from the bar plot the most dominant sectors are engineering and services."Most work is centered around industrial jobs not enough arts based jobs"
 ### salary analysis
 to analyze the salary satistics we must first convert in to pure numbers removing the comas and the dollar signs

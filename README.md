@@ -3,6 +3,26 @@ this is my attempt at the CityofLA competition on kaggle using the kernals as a 
 
 The goal is to convert a folder full of plain-text job postings into a single structured CSV file and then to use this data to: (1) identify language that can negatively bias the pool of applicants; (2) improve the diversity and quality of the applicant pool; and/or (3) make it easier to determine which promotions are available to employees in each job class.
 
+### Table of Contents
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)  
+- [Deployment Process](#deployment-process)
+  - [Converting Plain-Text to CSV ](#converting-plain-text-to-csv) 
+  - [Identifying trends and traits](#identifying-trends-and-traits)
+    - [Creating job sectors](#creating-job-sectors)
+    - [Salary analysis](#salary-analysis)
+    - [Opportunities over the years](#opportunities-over-the-years)
+    - [Experience vs Education](#experience-vs-education)
+    - [Bulletin availablity](#bulletin-availablity)
+    - [Checking for gender bias](#checking-for-gender-bias)
+    - [FleschKincaid Grade Level(Readabilty measure)](#fleschkincaid-grade-level)
+    - [Checking for promotions and similar jobs](#checking-for-promotions-and-similar-jobs)
+
+- [Conclusions](#conclusions)  
+- [Suggestions](#suggestions)  
+- [Acknowledgments](#acknowledgments) 
+
+
 ## Getting Started
 
 ### Prerequisites
@@ -131,8 +151,8 @@ print(df.shape)
 665 out of the initial 683 are extracted now we can perform analysis on them.
 
 
-## Identifying trends and traits of the bulletins
-### creating job sectors
+### Identifying trends and traits
+#### creating job sectors
 By analyzing reoccuring words in the job title we can make out the differant job sectors available in the city of LA. We can then create a plot of the top 10 to figure out the most dominant.
 ```python
 
@@ -160,7 +180,7 @@ plt.show()
 ```
 ![Alt text](images/Figure_1.png)
 As seen from the bar plot the most dominant sectors are engineering and services.
-### salary analysis
+#### salary analysis
 to analyze the salary satistics we must first convert in to pure numbers removing the comas and the dollar signs
 ```python
 
@@ -210,7 +230,7 @@ plt.show()
 ```
 ![Alt text](images/Figure_4.png)
 Mechanical repair general supervisor job has the highest deviation. it is clear from this that a supervisor position has the most salary growth without the need for a promotion.
-### Opportunities over the years
+#### Opportunities over the years
 we can check for the fluctuation in the job market over the years by analyzing the open date of the job listings
 ```python
 
@@ -289,7 +309,7 @@ plt.show()
 ```
 ![Alt text](images/Figure_7.png)
 The fastest growing sector in the city is engineering and these results are inline with the largest sectors.
-### Experience vs Education
+#### Experience vs Education
 We can check what level of experience is required by the job bulletins:
 ```python
 
@@ -349,7 +369,7 @@ sns.barplot(y=count.index,x=count,palette='rocket')
 plt.gca().set_yticklabels(count.index,rotation='45')
 plt.show()
 ```
-### Bulletin availablity
+#### Bulletin availablity
 what months are the job offers available in:
 
 ```python
@@ -374,7 +394,7 @@ print('%d job applications may close without prior notice' %df['deadline'].isna(
 
 ![Alt text](images/Figure_12.png)
 Most jobs only require an interview along with an essay
-### Checking for gender bias
+#### Checking for gender bias
 We can also check pronoun usage to check gender bias
 ```python
 
@@ -420,7 +440,7 @@ for name in df['Position']:
         
  ```
  None found the job listings are completely unbiased
- ### FleschKincaid Grade Level(Readabiltiy measure)
+ #### FleschKincaid Grade Level
 Designed to indicate how difficult a reading passage is to understand. The result is a number that corresponds with a U.S grade level.
 FKGL = 0.39 * (total words/ total sentences) + 11.8 (total syllables/ total words) -15.59
 
@@ -473,7 +493,7 @@ plt.show()
 
  ```
  ![Alt text](images/Figure_14.png)
- ### Checking for promotions and similar jobs
+ #### Checking for promotions and similar jobs
  We can check for relevant promotions as following
  ```python
 

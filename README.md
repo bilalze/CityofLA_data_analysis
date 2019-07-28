@@ -1,5 +1,5 @@
-# CityofLA_solution
-this is my attempt at the CityofLA competition on kaggle using the kernals as a helping hand
+# CityofLA_data_analysis project
+this is my attempt at the CityofLA data analysis competition on kaggle using the kernals as a helping hand
 
 The goal is to convert a folder full of plain-text job postings into a single structured CSV file and then to use this data to: (1) identify language that can negatively bias the pool of applicants; (2) improve the diversity and quality of the applicant pool; and/or (3) make it easier to determine which promotions are available to employees in each job class.
 

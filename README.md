@@ -24,7 +24,7 @@ os:to create a list of the bulletin text file names<br/>
 ## Deployment Process
 
 ### Converting Plain-Text to CSV 
-first to convert the folder of plain-text job postings we need to identify a pattern present in these text file so we can extract meaninigful data using regex templates.going through some of the text files we can see recurring patterns such as all the headlines are in caps and have the same order in all the job bulletins.
+first to convert the folder of plain-text job postings we need to identify a pattern present in these text file so we can extract meaninigful data using regex templates. Going through some of the text files we can see recurring patterns such as all the headlines are in caps and have the same order in all the job bulletins.
 ![Alt text](images/textfile_red_circle.jpg)
 we can extract these headings and use them as columns in our CSV:
 the Open date or the date the job was posted is also written in the same place in each bulletin. Analyzing these traits we can write a function to_dataframe to extract all the meaningful data from the text files:
@@ -121,16 +121,16 @@ df.to_csv('jobs_output.csv')#output to csv
 ```
 We can then view the csv file
 ![Alt text](images/csv.PNG)
-as can be seen most of the data from the job bulletins has been captured by printing the shape of the data frame we can know the exact number of entries
+as can be seen most of the data from the job bulletins has been captured. By printing the shape of the data frame we can know the exact number of entries
 ```
 print(df.shape)
 
 (665, 15)
 ```
-As can be seen 665 out of the initial 683 are extracted now we can perform analysis on them.
+665 out of the initial 683 are extracted now we can perform analysis on them.
 
 
-## Identifying trends and traits of the bulletins that can affect the pool of applicants
+## Identifying trends and traits of the bulletins
 ### creating job sectors
 By analyzing reoccuring words in the job title we can make out the differant job sectors available in the city of LA. We can then create a plot of the top 10 to figure out the most dominant.
 ```
@@ -157,7 +157,7 @@ plt.ylabel('sector')
 plt.show()
 ```
 ![Alt text](images/Figure_1.png)
-as can be seen from the bar plot the most dominant sectors are engineering and services."Most work is centered around industrial jobs not enough arts based jobs"
+As seen from the bar plot the most dominant sectors are engineering and services.
 ### salary analysis
 to analyze the salary satistics we must first convert in to pure numbers removing the comas and the dollar signs
 ```
@@ -179,8 +179,8 @@ plt.title('salary distribution')
 plt.show()
 ```
 ![Alt text](images/Figure_2.png)
-as can be seen from the plot that the salries vary from 40k to 150k with the average around 80k."salary inline with the american average"
-we can also check fro the highest paid jobs and the jobs tht have the highest dviation of salary
+As seen from the plot that the salaries vary from 40k to 150k with the average around 80k.
+we can also check for the highest paid jobs and the jobs that have the highest deviation from start to end salary
 ```
 most_paid=df[['Position','salary_start']].sort_values(by='salary_start',ascending=False)[:10]
 plt.figure(figsize=(7,5))
@@ -189,7 +189,7 @@ plt.title('Best paid jobs in LA')
 plt.show()
 ```
 ![Alt text](images/Figure_3.png)
-the largest job market might be engineering but the highest paid jobs come from the services sector and naval departments
+the largest job market might be engineering but the highest paid jobs come from the services sector and shipping and port sector
 
 ```
 test=pd.DataFrame(columns=['salary_diff','salary_diff_alt'])
@@ -204,7 +204,8 @@ plt.title("Highest deviation")
 plt.show()
 ```
 ![Alt text](images/Figure_4.png)
-as can be seen # job pays the most while # job has the highest deviation. it is clear from this that a supervisor position has the most salary growth without the need for a promotion."add average salary deviation and deviation in each sector"
+Mechanical repair general supervisor job has the highest deviation. it is clear from this that a supervisor position has the most salary growth without the need for a promotion.
+### Opportunities over the years
 we can check for the fluctuation in the job market over the years by analyzing the open date of the job listings
 ```
 df['year_of_open']=[date.year for date in df['opendate']]
@@ -222,8 +223,8 @@ plt.gca().set_xticklabels([z for z in reversed(years)],rotation='45')
 plt.show()
 ```
 ![Alt text](images/Figure_5png.png)
-the opportunities seem to be rising as a whole this seems to be rising dramatically over the years
-also we can check how the top 10 sectors have changed over the years
+The opportunities seem to be rising as a whole.
+We can also check how the top 10 sectors have changed induvidually over the years
 ```
 years2=df[['Position','year_of_open']].copy()
 
@@ -245,8 +246,7 @@ plt.legend(loc='upper left')
 plt.show()
 ```
 ![Alt text](images/Figure_6.png)
-as can be seen these job sectors have increased in the past two years
-we can check the fastest growing sectors in the city 
+We can also check the fastest growing sectors in the city 
 ```
 sectory=list()
 slopy=list()
@@ -280,8 +280,9 @@ plt.title('fastest growing job sector as of 2018')
 plt.show()
 ```
 ![Alt text](images/Figure_7.png)
-the fastest growing sector in the city is engineering and is inline with the largest sectors.
-we can check what level of experience is required for the jobs:
+The fastest growing sector in the city is engineering and these results are inline with the largest sectors.
+### Experience vs Education
+We can check what level of experience is required by the job bulletins:
 ```
 experience=df['EXPERIENCE_LENGTH'].value_counts().reset_index()
 experience['index']=experience['index'].apply(lambda x : x.lower())
@@ -295,7 +296,7 @@ plt.title('Experience value count')
 plt.show()
 ```
 ![Alt text](images/Figure_8.png)
-most of the jobs require two years of experience
+Most of the jobs require two years of experience
 also wether education or experience is prefered:
 ```
 x1=df['SCHOOL_TYPE'].value_counts()[0]
@@ -305,29 +306,9 @@ plt.bar(height=[x1,x2],x=['College Degree','Experience'])
 plt.show()
 ```
 ![Alt text](images/Figure_9.png)
-according to the listings most of the jobs prefer experience over a college degree
-what months are the job offers available in:
+According to the listings most of the jobs prefer experience over a college degree
 
-```
-plt.figure(figsize=(7,5))
-df['open_month']=[z.month for z in df['opendate']]
-count=df['open_month'].value_counts(sort=False)
-sns.barplot(y=count.values,x=count.index,palette='rocket')
-month_name=['','january','february','march','april','may','june','july','august','september','october','november','december']
-plt.gca().set_xticklabels([month_name[x] for x in count.index],rotation='45')
-plt.show()
-```
-![Alt text](images/Figure_10.png)
-from this graph the jobs seem to be well distributed across the year
-we can also see which of the job postings donot have an end date
-```
-print('%d job applications may close without prior notice' %df['deadline'].isna().sum())
-
-44 job applications may close without prior notice
-```
-we can the most common requirements by analyzing the words present in them
-also check most common words in requirements
-
+We can check the most common requirements by analyzing the words present in them
 ```
 token=nltk.tokenize.word_tokenize(req)
 counter=Counter(token)
@@ -347,8 +328,8 @@ Most common words in Requirement
 ('level', 318), ('from', 274), ('year', 263), ('college', 256), ('accredited', 253), ('university', 218), ('class', 199), ('professional', 189), ('maintenance', 172), ('which', 169), ('units', 157)]
 
 ```
-experience is the most in demand where as college or unversity are not even present in the top 10
-we can also see what most of the jobs use as an entry test:
+Experience is the most in demand where as college or unversity are not even present in the top 10
+we can also see what most of the jobs use as screening processes:
 ```
 plt.figure(figsize=(7,7))
 count=df['selection'].astype(str).value_counts()[:10]
@@ -356,9 +337,31 @@ sns.barplot(y=count.index,x=count,palette='rocket')
 plt.gca().set_yticklabels(count.index,rotation='45')
 plt.show()
 ```
+### Bulletin availablity
+what months are the job offers available in:
+
+```
+plt.figure(figsize=(7,5))
+df['open_month']=[z.month for z in df['opendate']]
+count=df['open_month'].value_counts(sort=False)
+sns.barplot(y=count.values,x=count.index,palette='rocket')
+month_name=['','january','february','march','april','may','june','july','august','september','october','november','december']
+plt.gca().set_xticklabels([month_name[x] for x in count.index],rotation='45')
+plt.show()
+```
+![Alt text](images/Figure_10.png)
+From this graph the jobs seem to be well distributed across the year
+We can also see which of the job postings donot have an end date
+```
+print('%d job applications may close without prior notice' %df['deadline'].isna().sum())
+
+44 job applications may close without prior notice
+```
+
 ![Alt text](images/Figure_12.png)
-most jobs only require an interview which is a good sign
-we can also check pronoun usage to remove gender bias
+Most jobs only require an interview along with an essay
+### Checking for gender bias
+We can also check pronoun usage to check gender bias
 ```
 def pronoun(data):
     '''function to tokenize data and perform pos_tagging.Returns tokens having "PRP" tag'''
@@ -387,8 +390,8 @@ dict_keys(['or2', 'or3', 'or4', 'orb', 'you', 'I', 'they', 'orc', 'or5', 'or6', 
 pronouns used in duties section are
 dict_keys(['they', 'it', 'You', 'I', 'you', 's', 'or2', 'They'])
 ```
-the pronouns used are gender nuetral
-check for job listings such as 'policeman' or 'fireman'
+The pronouns used are all gender nuetral
+check for gender biased job listings such as 'policeman' or 'fireman'
 ```
 for name in df['Position']:
     z=re.match(r'\w+?\s?\w+(man|woman|men|women)$',name)
@@ -400,19 +403,19 @@ for name in df['Position']:
         
         
  ```
- none found
- FleschKincaid Grade Level
+ None found the job listings are completely unbiased
+ ### FleschKincaid Grade Level(Readabiltiy measure)
 Designed to indicate how difficult a reading passage is to understand. The result is a number that corresponds with a U.S grade level.
 FKGL = 0.39 * (total words/ total sentences) + 11.8 (total syllables/ total words) -15.59
 
-Flesch Index ------- Text file reading Grade
+Flesch Index ------- Text file reading Grade<br\>
 
-0-30 --------- College
+0-30 --------- College<br\>
 
-50-60 --------- High School
+50-60 --------- High School<br\>
 
-90-100 --------- Fourth Grade
- we can also check for the reading index
+90-100 --------- Fourth Grade<br\>
+
  ```
  reading = []
 for file in df['File Name']:
@@ -440,7 +443,8 @@ plt.title('Flesch index distribution')
 plt.show()
  ```
  ![Alt text](images/Figure_13.png)
-  checking for college requirement
+ The reding index is all below 10 which means all the bulletins are college level when it comes to readability.
+ Lets see how that constrasts with college requirements
  ```
  tot=df['SCHOOL_TYPE'].shape[0]
 x1=round(df[df['SCHOOL_TYPE']=='College or University'].shape[0]/tot*100)
@@ -451,7 +455,8 @@ plt.show()
 
  ```
  ![Alt text](images/Figure_14.png)
- also we can check for relevant promotions
+ ### Checking for promotions and similar jobs
+ We can check for relevant promotions as following
  ```
  def similar_jobs(job):
     ''' function to find and return jobs with similar job title.take a single argument
@@ -512,7 +517,9 @@ for pos in df['Position']:
 print(listprom.shape)
 listprom=listprom.reset_index(drop=True)
  ```
- also jobs with similar equirements can also be found:
+  ![Alt text](images/Capture1.PNG)
+  The picture above shows an example from the job bulletins
+ Also jobs with similar equirements can be found as following:
  ```
  def similar_req(job):
     ''' function to find and return jobs with similar job title.take a single argument
@@ -529,10 +536,38 @@ listprom=listprom.reset_index(drop=True)
             jobs.append((name, df.iloc[i]['Position']))
     return jobs
 print(similar_req(df['requirements'][10]))
+
+[('chief of drafting operations', 117), ('chief of operations', 118)]
  ```
 this way applicants applying for one job can know about other jobs with similar requirements making them easier to access
+
+## Conclusions
+
+1.After estimating the sectors of jobs it was found out that the diversity in the job market is mostly dominated by the engineering and services sectors<br/>
+2.Salary distribution is inline with the american middle class<br/>
+3.the highest paying jobs are in the services sector and shipping and port management<br/>
+4.greatest pay rise without a promotion can be achieved generally in the supervisor position<br/>
+5.There is no shortage of job opportunities in LA with job listings rising at an exponential level since 2016<br/>
+6.the rise in job listings is largely contributed to by the largest job sectors<br/>
+7.The fastest growing job sectors are the most dominant<br/>
+8.Experience of at least two years is demanded by the majority of job listings<br/>
+9.Experience is valued higher than a college degree with almost all jobs requiring some sort of experience where as only a third require a college degree of some sort<br/>
+10. job listings are distributed mostly evenly across the year<br/>
+11.checking the requirements of the jobs mostly shows previous experience as the most dominant requirement<br/>
+12.most jobs require an essay along with an interview for the screening process whereas essay, interview and tests(multiple choice etc) being the most common selection processes<br/>
+13.the pronouns used in the job bulletins are all gender nuetral<br/>
+14. No gender biased job titles are use like "fire man","police man" etc.<br/>
+
+## Suggestions
+
+1.More no collar jobs need to be introduced as the job market seems lacking in that area.<br/>
+2. The most succesful economies are ones where the job market is diverse. The LA Job market seems to be largely dominated by 1 or 2 sectors. Diversity in the job market needs to be introduced.<br/>
+3. Almost all jobs require previous experience which discourages fresh graduates and keeps them out of the job market.<br/>
+4. Most jobs have 2 to 3 screening procedures which limits potential candidates. They should be reduced to just a face to face interview.<br/>
+5. the bulletins have reading difficulty of a college graduate whereas two thirds of them donot require a college degree. The bulletins should be constructed with simpler language<br/>
+6. the city of LA can use the promotions function to find out the promotions available to each job listing<br/>
+7. the city of LA can use the similar requirents function to find similar jobs so as people applying for one job can find out other that they might be eligible to aswell<br/>
+8. All job bulletins need to have a closing date specified as to avoid confusion <br/>
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* shahules kernel on kaggle

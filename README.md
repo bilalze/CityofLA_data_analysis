@@ -28,7 +28,7 @@ first to convert the folder of plain-text job postings we need to identify a pat
 ![Alt text](images/textfile_red_circle.jpg)
 we can extract these headings and use them as columns in our CSV:
 the Open date or the date the job was posted is also written in the same place in each bulletin. Analyzing these traits we can write a function to_dataframe to extract all the meaningful data from the text files:
-```
+```python
 def to_dataframe(path):
     """"function to extract all meaningful features from job bulletin text files and convert to
     pandas dataframe.
@@ -114,7 +114,8 @@ def to_dataframe(path):
     return df
 ```
 An example of executing this function would be:
-```
+```python
+
 path="C:/Users/twist/CityofLA/Job Bulletins/"
 df=to_dataframe(path)
 df.to_csv('jobs_output.csv')#output to csv
@@ -133,7 +134,8 @@ print(df.shape)
 ## Identifying trends and traits of the bulletins
 ### creating job sectors
 By analyzing reoccuring words in the job title we can make out the differant job sectors available in the city of LA. We can then create a plot of the top 10 to figure out the most dominant.
-```
+```python
+
 plt.figure(figsize=(8,5))
 text=''.join(job for job in df['Position'])                                ##joining  data to form text
 text=nltk.tokenize.word_tokenize(text)
@@ -160,7 +162,8 @@ plt.show()
 As seen from the bar plot the most dominant sectors are engineering and services.
 ### salary analysis
 to analyze the salary satistics we must first convert in to pure numbers removing the comas and the dollar signs
-```
+```python
+
 df['salary_start']=[sal.replace('$','')  if sal!= None else 0 for sal in df['salary_start']  ]
 df['salary_start']=[int(sal.split(',')[0]+sal.split(',')[1] ) if type(sal)!=int else 0 for sal in df['salary_start']]
 df['salary_end']=[sal.replace('$','')  if sal!= None else 0 for sal in df['salary_end']  ]
@@ -181,7 +184,8 @@ plt.show()
 ![Alt text](images/Figure_2.png)
 As seen from the plot that the salaries vary from 40k to 150k with the average around 80k.
 we can also check for the highest paid jobs and the jobs that have the highest deviation from start to end salary
-```
+```python
+
 most_paid=df[['Position','salary_start']].sort_values(by='salary_start',ascending=False)[:10]
 plt.figure(figsize=(7,5))
 sns.barplot(y=most_paid['Position'],x=most_paid['salary_start'],palette='rocket')
@@ -191,7 +195,8 @@ plt.show()
 ![Alt text](images/Figure_3.png)
 the largest job market might be engineering but the highest paid jobs come from the services sector and shipping and port sector
 
-```
+```python
+
 test=pd.DataFrame(columns=['salary_diff','salary_diff_alt'])
 #test['salary_diff']=[abs(row['salary_start']-row['salary_end_alt']) if row['salary_end_alt']!="nan" else abs(row['salary_start']-row['salary_end']) for index, row in df.iterrows()  ]
 test['salary_diff_alt']=abs(df['salary_start_alt']-df['salary_end_alt'])
@@ -207,7 +212,8 @@ plt.show()
 Mechanical repair general supervisor job has the highest deviation. it is clear from this that a supervisor position has the most salary growth without the need for a promotion.
 ### Opportunities over the years
 we can check for the fluctuation in the job market over the years by analyzing the open date of the job listings
-```
+```python
+
 df['year_of_open']=[date.year for date in df['opendate']]
 
 count=df['year_of_open'].value_counts(ascending=True)
@@ -225,7 +231,8 @@ plt.show()
 ![Alt text](images/Figure_5png.png)
 The opportunities seem to be rising as a whole.
 We can also check how the top 10 sectors have changed induvidually over the years
-```
+```python
+
 years2=df[['Position','year_of_open']].copy()
 
 years2=years2.sort_values(by='year_of_open',ascending=False)
@@ -247,7 +254,8 @@ plt.show()
 ```
 ![Alt text](images/Figure_6.png)
 We can also check the fastest growing sectors in the city 
-```
+```python
+
 sectory=list()
 slopy=list()
 for x,y in job_class_final[:][:10] :
@@ -283,7 +291,8 @@ plt.show()
 The fastest growing sector in the city is engineering and these results are inline with the largest sectors.
 ### Experience vs Education
 We can check what level of experience is required by the job bulletins:
-```
+```python
+
 experience=df['EXPERIENCE_LENGTH'].value_counts().reset_index()
 experience['index']=experience['index'].apply(lambda x : x.lower())
 experience=experience.groupby('index',as_index=False).agg('sum')
@@ -298,7 +307,8 @@ plt.show()
 ![Alt text](images/Figure_8.png)
 Most of the jobs require two years of experience
 also wether education or experience is prefered:
-```
+```python
+
 x1=df['SCHOOL_TYPE'].value_counts()[0]
 x2=df['FULL_TIME_PART_TIME'].value_counts()[0]
 plt.figure(figsize=(5,5))
@@ -309,7 +319,8 @@ plt.show()
 According to the listings most of the jobs prefer experience over a college degree
 
 We can check the most common requirements by analyzing the words present in them
-```
+```python
+
 token=nltk.tokenize.word_tokenize(req)
 counter=Counter(token)
 count=[x for x in counter.most_common(40) if len(x[0])>3]
@@ -330,7 +341,8 @@ Most common words in Requirement
 ```
 Experience is the most in demand where as college or unversity are not even present in the top 10
 we can also see what most of the jobs use as screening processes:
-```
+```python
+
 plt.figure(figsize=(7,7))
 count=df['selection'].astype(str).value_counts()[:10]
 sns.barplot(y=count.index,x=count,palette='rocket')
@@ -340,7 +352,8 @@ plt.show()
 ### Bulletin availablity
 what months are the job offers available in:
 
-```
+```python
+
 plt.figure(figsize=(7,5))
 df['open_month']=[z.month for z in df['opendate']]
 count=df['open_month'].value_counts(sort=False)
@@ -352,7 +365,8 @@ plt.show()
 ![Alt text](images/Figure_10.png)
 From this graph the jobs seem to be well distributed across the year
 We can also see which of the job postings donot have an end date
-```
+```python
+
 print('%d job applications may close without prior notice' %df['deadline'].isna().sum())
 
 44 job applications may close without prior notice
@@ -362,7 +376,8 @@ print('%d job applications may close without prior notice' %df['deadline'].isna(
 Most jobs only require an interview along with an essay
 ### Checking for gender bias
 We can also check pronoun usage to check gender bias
-```
+```python
+
 def pronoun(data):
     '''function to tokenize data and perform pos_tagging.Returns tokens having "PRP" tag'''
 
@@ -392,7 +407,8 @@ dict_keys(['they', 'it', 'You', 'I', 'you', 's', 'or2', 'They'])
 ```
 The pronouns used are all gender nuetral
 check for gender biased job listings such as 'policeman' or 'fireman'
-```
+```python
+
 for name in df['Position']:
     z=re.match(r'\w+?\s?\w+(man|woman|men|women)$',name)
     x = re.match(r'\w+?\s?(man|woman|men|women|male|female)$', name)
@@ -416,7 +432,8 @@ Flesch Index ------- Text file reading Grade<br\>
 
 90-100 --------- Fourth Grade<br\>
 
- ```
+ ```python
+
  reading = []
 for file in df['File Name']:
     text=open( "C:/Users/twist/CityofLA/Job Bulletins/"+file,'r').read()
@@ -445,7 +462,8 @@ plt.show()
  ![Alt text](images/Figure_13.png)
  The reding index is all below 10 which means all the bulletins are college level when it comes to readability.
  Lets see how that constrasts with college requirements
- ```
+ ```python
+
  tot=df['SCHOOL_TYPE'].shape[0]
 x1=round(df[df['SCHOOL_TYPE']=='College or University'].shape[0]/tot*100)
 x2=100-x1
@@ -457,7 +475,8 @@ plt.show()
  ![Alt text](images/Figure_14.png)
  ### Checking for promotions and similar jobs
  We can check for relevant promotions as following
- ```
+ ```python
+
  def similar_jobs(job):
     ''' function to find and return jobs with similar job title.take a single argument
             - job title
@@ -520,7 +539,8 @@ listprom=listprom.reset_index(drop=True)
   ![Alt text](images/Capture1.PNG)
   The picture above shows an example from the job bulletins
  Also jobs with similar equirements can be found as following:
- ```
+ ```python
+
  def similar_req(job):
     ''' function to find and return jobs with similar job title.take a single argument
             - job title
